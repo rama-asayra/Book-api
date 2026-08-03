@@ -6,8 +6,8 @@ import {
   deleteBookService,
 } from "../services/books.service.js";
 
-export function getBooks(req, res) {
-  const books = getBooksService();
+export async function getBooks(req, res) {
+  const books = await getBooksService();
   if (books.length == 0) {
     return res.status(404).json({
       message: "no books found",
@@ -16,9 +16,9 @@ export function getBooks(req, res) {
   res.json(books);
 }
 
-export function getBookById(req, res) {
-  const id = Number(req.params.id);
-  const book = getBookByIdService(id);
+export async function getBookById(req, res) {
+  const id = req.params.id;
+  const book = await getBookByIdService(id);
   if (!book) {
     return res.status(404).json({
       message: "book not found",
@@ -27,7 +27,7 @@ export function getBookById(req, res) {
   res.json(book);
 }
 
-export function createBook(req, res) {
+export async function createBook(req, res) {
   const { title, author } = req.body;
 
   if (!title || !author) {
@@ -36,12 +36,12 @@ export function createBook(req, res) {
     });
   }
 
-  const newBook = createBookService(title, author);
+  const newBook = await createBookService(title, author);
   return res.status(201).json(newBook);
 }
 
-export function updateBook(req, res) {
-  const id = Number(req.params.id);
+export async function updateBook(req, res) {
+  const id = req.params.id;
   const { title, author } = req.body;
 
   if (!title || !author) {
@@ -50,7 +50,7 @@ export function updateBook(req, res) {
     });
   }
 
-  const updatedBook = updateBookService(id, title, author);
+  const updatedBook = await updateBookService(id, title, author);
 
   if (!updatedBook) {
     return res.status(404).json({
@@ -61,10 +61,10 @@ export function updateBook(req, res) {
   return res.status(200).json(updatedBook);
 }
 
-export function deleteBook(req, res) {
-  const id = Number(req.params.id);
+export async function deleteBook(req, res) {
+  const id = req.params.id;
 
-  const deletedBook = deleteBookService(id);
+  const deletedBook = await deleteBookService(id);
 
   if (!deletedBook) {
     return res.status(404).json({
