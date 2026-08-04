@@ -26,6 +26,7 @@ export async function updateBookService(id, title, author) {
     { title, author },
     {
       returnDocument: "after",
+      runValidators: true,
     },
   );
 

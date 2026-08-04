@@ -8,6 +8,8 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import bookRoutes from "./routes/books.routes.js";
 
+import errorHandler from "./middlewares/error.middleware.js";
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/books", bookRoutes);
+app.use(errorHandler);
 
 await connectDB();
 
