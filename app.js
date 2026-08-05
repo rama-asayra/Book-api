@@ -10,6 +10,8 @@ import bookRoutes from "./routes/books.routes.js";
 
 import errorHandler from "./middlewares/error.middleware.js";
 
+import cors from "cors";
+
 dotenv.config();
 
 const app = express();
@@ -21,6 +23,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  }),
+);
 app.use("/api/books", bookRoutes);
 app.use(errorHandler);
 
