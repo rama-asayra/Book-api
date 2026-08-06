@@ -1,53 +1,75 @@
 # 📚 Books API
 
-A simple RESTful API built with **Node.js** and **Express.js** that performs CRUD operations on an in-memory collection of books.
+A RESTful Books API built with **Node.js**, **Express.js**, and **MongoDB** following the MVC architecture.
 
-This project was created as part of **Backend Task 2 (Week 6)** to practice Express routing, controllers, services, REST APIs, and HTTP methods.
+The project supports CRUD operations, request validation, global error handling, JWT authentication, and protected routes.
 
 ---
 
 ## 🚀 Features
 
-- Get all books
-- Get a single book by ID
-- Create a new book
-- Update an existing book
-- Delete a book
-- Request logging middleware
-- JSON request body parsing
-- RESTful API design
-- Layered architecture (Routes → Controllers → Services)
+- CRUD operations for books
+- MongoDB with Mongoose
+- MVC Architecture
+- Service Layer
+- Request Validation
+- Global Error Handling
+- CORS Configuration
+- User Registration
+- User Login
+- Password Hashing with bcrypt
+- JWT Authentication
+- Protected Routes
 
 ---
 
-## 📁 Project Structure
-
-```text
-task-2-books-api/
-│
-├── app.js
-├── package.json
-│
-├── routes/
-│   └── books.routes.js
-│
-├── controllers/
-│   └── books.controller.js
-│
-├── services/
-│   └── books.service.js
-│
-└── README.md
-```
-
----
-
-## 🛠 Technologies
+## 🛠️ Tech Stack
 
 - Node.js
 - Express.js
-- ES Modules
+- MongoDB Atlas
+- Mongoose
+- bcrypt
+- JSON Web Token (JWT)
+- dotenv
+- CORS
 - Nodemon
+
+---
+
+## 📂 Project Structure
+
+```text
+project/
+│
+├── config/
+│   └── db.js
+│
+├── controllers/
+│   ├── auth.controller.js
+│   └── books.controller.js
+│
+├── middlewares/
+│   ├── auth.middleware.js
+│   └── error.middleware.js
+│
+├── models/
+│   ├── book.model.js
+│   └── user.model.js
+│
+├── routes/
+│   ├── auth.routes.js
+│   └── books.routes.js
+│
+├── services/
+│   ├── auth.service.js
+│   └── books.service.js
+│
+├── .env
+├── app.js
+├── package.json
+└── README.md
+```
 
 ---
 
@@ -59,150 +81,149 @@ Clone the repository:
 git clone <repository-url>
 ```
 
-Move into the project directory:
-
-```bash
-cd task-2-books-api
-```
-
 Install dependencies:
 
 ```bash
 npm install
 ```
 
-Run the development server:
+Create a `.env` file:
+
+```env
+PORT=3000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+JWT_EXPIRES_IN=1h
+
+BCRYPT_SALT_ROUNDS=10
+```
+
+Run the server:
 
 ```bash
 npm run dev
 ```
 
-The server will start at:
-
-```text
-http://localhost:3000
-```
-
 ---
 
-## 📌 API Endpoints
+## 🔑 Authentication
 
-### Get all books
-
-```http
-GET /api/books
-```
-
-Response
-
-```json
-[
-  {
-    "id": 1,
-    "title": "Clean Code",
-    "author": "Robert C. Martin"
-  }
-]
-```
-
----
-
-### Get a book by ID
+### Register
 
 ```http
-GET /api/books/:id
-```
-
-Example
-
-```http
-GET /api/books/1
-```
-
----
-
-### Create a new book
-
-```http
-POST /api/books
+POST /api/auth/register
 ```
 
 Request Body
 
 ```json
 {
-  "title": "Clean Code",
-  "author": "Robert C. Martin"
+  "email": "user@example.com",
+  "password": "12345678"
 }
-```
-
-Response
-
-```http
-201 Created
 ```
 
 ---
 
-### Update a book
+### Login
 
 ```http
-PUT /api/books/:id
+POST /api/auth/login
 ```
 
 Request Body
 
 ```json
 {
-  "title": "Clean Code (2nd Edition)",
-  "author": "Robert C. Martin"
+  "email": "user@example.com",
+  "password": "12345678"
+}
+```
+
+Response
+
+```json
+{
+  "token": "JWT_TOKEN"
 }
 ```
 
 ---
 
-### Delete a book
+## 📚 Books Endpoints
+
+### Public
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | `/api/books` | Get all books |
+| GET | `/api/books/:id` | Get a book by ID |
+
+---
+
+### Protected
+
+Require:
 
 ```http
-DELETE /api/books/:id
+Authorization: Bearer <JWT_TOKEN>
 ```
 
----
-
-## 🧪 Testing
-
-The API can be tested using:
-
-- Thunder Client
-- Postman
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/api/books` | Create a book |
+| PUT | `/api/books/:id` | Update a book |
+| DELETE | `/api/books/:id` | Delete a book |
 
 ---
 
-## 📖 Concepts Practiced
+## ⚠️ Error Handling
 
-- Express.js
-- REST API
-- CRUD Operations
-- HTTP Methods
-- HTTP Status Codes
-- Middleware
-- Route Parameters
-- Request Body
-- Controllers
-- Services
-- ES Modules
-- Separation of Concerns
+The API returns meaningful HTTP status codes.
 
----
-
-## ⚠️ Notes
-
-This project stores data in an **in-memory array**.
-
-Data will be reset whenever the server restarts because no database is used.
+| Status Code | Description |
+|-------------|-------------|
+| 200 | OK |
+| 201 | Created |
+| 400 | Bad Request |
+| 401 | Unauthorized |
+| 404 | Not Found |
+| 409 | Conflict |
+| 500 | Internal Server Error |
 
 ---
 
-## 👩‍💻 Author
+## 🔒 Security
+
+- Passwords are hashed using **bcrypt**.
+- Authentication is implemented using **JWT**.
+- Protected routes require a valid Bearer Token.
+- Sensitive information is stored in environment variables.
+
+---
+
+## 📖 Learning Objectives
+
+This project demonstrates:
+
+- REST API Design
+- MVC Architecture
+- Service Layer Pattern
+- MongoDB Integration
+- Authentication & Authorization
+- Password Hashing
+- JWT Authentication
+- Error Handling
+- Request Validation
+- Protected Routes
+
+---
+
+## 👨‍💻 Author
 
 **Rama Asayra**
+
+Computer Engineering Student | Aspiring Full-Stack Developer
