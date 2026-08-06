@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 
 import { connectDB } from "./config/db.js";
 import bookRoutes from "./routes/books.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 import errorHandler from "./middlewares/error.middleware.js";
 
@@ -29,6 +30,8 @@ app.use(
   }),
 );
 app.use("/api/books", bookRoutes);
+app.use("/api/auth/", authRoutes);
+
 app.use(errorHandler);
 
 await connectDB();

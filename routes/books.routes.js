@@ -4,13 +4,14 @@ import { getBookById } from "../controllers/books.controller.js";
 import { createBook } from "../controllers/books.controller.js";
 import { updateBook } from "../controllers/books.controller.js";
 import { deleteBook } from "../controllers/books.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
 router.get("/", getBooks);
 router.get("/:id", getBookById);
-router.post("/", createBook);
-router.put("/:id", updateBook);
-router.delete("/:id", deleteBook);
+router.post("/", authMiddleware, createBook);
+router.put("/:id", authMiddleware, updateBook);
+router.delete("/:id", authMiddleware, deleteBook);
 
 export default router;
